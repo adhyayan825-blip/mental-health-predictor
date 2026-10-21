@@ -3,185 +3,219 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mental Health Score Predictor</title>
+  <meta name="theme-color" content="#0b1220">
+  <title>MindMetric | Mental Health Score Predictor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <h1>Mental Health Score Predictor</h1>
-    <p>Enter a student's profile and daily habits. The model returns a predicted mental health score.</p>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Application information">
+      <a class="brand" href="#" aria-label="MindMetric home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><path d="M16 5.5v21M5.5 16h21M8.6 8.6l14.8 14.8M23.4 8.6 8.6 23.4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="16" cy="16" r="11.2" stroke="currentColor" stroke-width="1.7"/></svg>
+        </span>
+        <span><strong>MindMetric</strong><small>STUDENT WELLNESS LAB</small></span>
+      </a>
 
-  <main class="layout">
-
-    <!-- ===== THE FORM ===== -->
-    <!-- novalidate: we run our own validation in script.js so error messages look consistent -->
-    <form id="predict-form" novalidate>
-
-      <fieldset>
-        <legend>About the student</legend>
-
-        <div class="field">
-          <label for="age">Age</label>
-          <input type="number" id="age" name="age" min="10" max="100" step="1" inputmode="numeric" placeholder="e.g. 20">
-          <small class="hint">Whole number, 10 to 100</small>
-          <small class="error" data-error-for="age"></small>
-        </div>
-
-        <div class="field">
-          <label for="gender">Gender</label>
-          <select id="gender" name="gender">
-            <option value="">Select…</option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-          <small class="error" data-error-for="gender"></small>
-        </div>
-
-        <div class="field">
-          <label for="country">Country</label>
-          <!-- A text input + datalist: suggests common countries, but any country can be typed,
-               because your API accepts any string for country. -->
-          <input type="text" id="country" name="country" list="country-list" autocomplete="off" placeholder="Start typing…">
-          <datalist id="country-list">
-            <option value="India"><option value="USA"><option value="Canada"><option value="Australia">
-            <option value="UK"><option value="Germany"><option value="Mexico"><option value="Turkey">
-            <option value="France"><option value="Other">
-          </datalist>
-          <small class="error" data-error-for="country"></small>
-        </div>
-
-        <div class="field">
-          <label for="academic_level">Academic level</label>
-          <select id="academic_level" name="academic_level">
-            <option value="">Select…</option>
-            <option>High School</option>
-            <option>Undergraduate</option>
-            <option>Graduate</option>
-          </select>
-          <small class="error" data-error-for="academic_level"></small>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Social media use</legend>
-
-        <div class="field">
-          <label for="most_used_platform">Most used platform</label>
-          <select id="most_used_platform" name="most_used_platform">
-            <option value="">Select…</option>
-            <option>Facebook</option><option>Instagram</option><option>Twitter</option>
-            <option>Snapchat</option><option>TikTok</option><option>YouTube</option>
-            <option>LinkedIn</option><option>WhatsApp</option><option>WeChat</option>
-            <option>LINE</option><option>KakaoTalk</option><option>VKontakte</option>
-          </select>
-          <small class="error" data-error-for="most_used_platform"></small>
-        </div>
-
-        <div class="field">
-          <label for="purpose_of_use">Main purpose of use</label>
-          <select id="purpose_of_use" name="purpose_of_use">
-            <option value="">Select…</option>
-            <option>Entertainment</option>
-            <option>Education</option>
-            <option>Networking</option>
-            <option>News</option>
-          </select>
-          <small class="error" data-error-for="purpose_of_use"></small>
-        </div>
-
-        <div class="field">
-          <label for="avg_daily_usage_hours">Average daily usage</label>
-          <div class="slider-row">
-            <input type="range" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.5" value="4">
-            <output for="avg_daily_usage_hours">4 h</output>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="daily_unlocks">Phone unlocks per day</label>
-          <input type="number" id="daily_unlocks" name="daily_unlocks" min="0" step="1" inputmode="numeric" placeholder="e.g. 60">
-          <small class="hint">Whole number, 0 or more</small>
-          <small class="error" data-error-for="daily_unlocks"></small>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Daily routine</legend>
-
-        <div class="field">
-          <label for="study_hours">Study hours per day</label>
-          <div class="slider-row">
-            <input type="range" id="study_hours" name="study_hours" min="0" max="24" step="0.5" value="4">
-            <output for="study_hours">4 h</output>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="physical_activity_hours">Physical activity per day</label>
-          <div class="slider-row">
-            <input type="range" id="physical_activity_hours" name="physical_activity_hours" min="0" max="24" step="0.5" value="1">
-            <output for="physical_activity_hours">1 h</output>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="sleep_hours_per_night">Sleep per night</label>
-          <div class="slider-row">
-            <input type="range" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.5" value="7">
-            <output for="sleep_hours_per_night">7 h</output>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Stress</legend>
-        <div class="field">
-          <!-- Radio buttons styled as a segmented control -->
-          <div class="segmented" role="radiogroup" aria-label="Stress level">
-            <label><input type="radio" name="stress_level" value="Low"><span>Low</span></label>
-            <label><input type="radio" name="stress_level" value="Medium"><span>Medium</span></label>
-            <label><input type="radio" name="stress_level" value="High"><span>High</span></label>
-            <label><input type="radio" name="stress_level" value="Very High"><span>Very High</span></label>
-          </div>
-          <small class="error" data-error-for="stress_level"></small>
-        </div>
-      </fieldset>
-
-      <button type="submit" id="predict-btn" class="predict-btn">Predict Mental Health Score</button>
-    </form>
-
-    <!-- ===== THE RESULT PANEL ===== -->
-    <!-- aria-live makes screen readers announce changes here -->
-    <aside class="result" id="result" aria-live="polite">
-      <div class="state" id="state-idle">
-        <h2>Your result will appear here</h2>
-        <p>Fill in the form and choose Predict Mental Health Score.</p>
+      <div class="sidebar-intro">
+        <span class="eyebrow">YOUR WELLNESS SNAPSHOT</span>
+        <h2>Small habits.<br><span>Useful insights.</span></h2>
+        <p>Explore how a student's daily routine and digital habits relate to a model-estimated score.</p>
       </div>
 
-      <div class="state" id="state-loading" hidden>
-        <div class="spinner" aria-hidden="true"></div>
-        <p>Asking the model…</p>
-      </div>
-
-      <div class="state" id="state-success" hidden>
-        <h2>Predicted mental health score</h2>
-        <div class="score" id="score-value">
-          <span id="score-value">–</span><span class="out-of">/ 10</span>
+      <div class="sidebar-card">
+        <div class="sidebar-card-icon" aria-hidden="true">✳</div>
+        <div>
+          <strong>Designed for exploration</strong>
+          <p>Change the inputs and compare the model's predictions.</p>
         </div>
-        <p class="note">This is a model estimate, not a diagnosis.</p>
       </div>
 
-      <div class="state" id="state-error" hidden>
-        <h2>Couldn't get a prediction</h2>
-        <p id="error-message"></p>
+      <div class="sidebar-bottom">
+        <span class="status-dot"></span>
+        <span>Prediction service</span>
+        <span class="status-label">API connected by request</span>
       </div>
     </aside>
-  </main>
 
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">Workspace <span>/</span> Predictor</div>
+          <h1>Mental Health Score Predictor</h1>
+          <p class="page-subtitle">Enter a student profile to generate a model estimate.</p>
+        </div>
+        <div class="topbar-chip"><span class="chip-dot"></span> ML-powered prototype</div>
+      </header>
+
+      <div class="content-grid">
+        <form id="predict-form" novalidate>
+          <section class="form-card">
+            <div class="section-heading">
+              <div class="section-icon">01</div>
+              <div><h2>Student profile</h2><p>A little context about the student.</p></div>
+            </div>
+            <div class="fields-grid">
+              <div class="field">
+                <label for="age">Age <span class="required">*</span></label>
+                <input type="number" id="age" name="age" min="10" max="100" step="1" inputmode="numeric" placeholder="e.g. 20">
+                <small class="error" data-error-for="age"></small>
+              </div>
+              <div class="field">
+                <label for="gender">Gender <span class="required">*</span></label>
+                <select id="gender" name="gender"><option value="">Select gender</option><option>Male</option><option>Female</option></select>
+                <small class="error" data-error-for="gender"></small>
+              </div>
+              <div class="field">
+                <label for="country">Country <span class="required">*</span></label>
+                <input type="text" id="country" name="country" list="country-list" autocomplete="off" placeholder="Start typing a country">
+                <datalist id="country-list">
+                  <option value="India"><option value="USA"><option value="Canada"><option value="Australia">
+                  <option value="UK"><option value="Germany"><option value="Mexico"><option value="Turkey">
+                  <option value="France"><option value="Other">
+                </datalist>
+                <small class="error" data-error-for="country"></small>
+              </div>
+              <div class="field">
+                <label for="academic_level">Academic level <span class="required">*</span></label>
+                <select id="academic_level" name="academic_level"><option value="">Select level</option><option>High School</option><option>Undergraduate</option><option>Graduate</option></select>
+                <small class="error" data-error-for="academic_level"></small>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-card">
+            <div class="section-heading">
+              <div class="section-icon">02</div>
+              <div><h2>Digital habits</h2><p>How social platforms fit into the day.</p></div>
+            </div>
+            <div class="fields-grid">
+              <div class="field">
+                <label for="most_used_platform">Most-used platform <span class="required">*</span></label>
+                <select id="most_used_platform" name="most_used_platform">
+                  <option value="">Choose a platform</option>
+                  <option>Facebook</option><option>Instagram</option><option>Twitter</option><option>Snapchat</option>
+                  <option>TikTok</option><option>YouTube</option><option>LinkedIn</option><option>WhatsApp</option>
+                  <option>WeChat</option><option>LINE</option><option>KakaoTalk</option><option>VKontakte</option>
+                </select>
+                <small class="error" data-error-for="most_used_platform"></small>
+              </div>
+              <div class="field">
+                <label for="purpose_of_use">Main purpose <span class="required">*</span></label>
+                <select id="purpose_of_use" name="purpose_of_use">
+                  <option value="">Choose a purpose</option><option>Entertainment</option><option>Education</option><option>Networking</option><option>News</option>
+                </select>
+                <small class="error" data-error-for="purpose_of_use"></small>
+              </div>
+              <div class="field field-wide">
+                <div class="label-line"><label for="avg_daily_usage_hours">Average daily usage</label><output for="avg_daily_usage_hours" class="range-value">4 hours</output></div>
+                <input type="range" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.5" value="4">
+                <div class="range-ends"><span>0 hours</span><span>24 hours</span></div>
+              </div>
+              <div class="field field-wide">
+                <label for="daily_unlocks">Phone unlocks per day <span class="required">*</span></label>
+                <input type="number" id="daily_unlocks" name="daily_unlocks" min="0" step="1" inputmode="numeric" placeholder="e.g. 60">
+                <small class="hint">Enter a whole number, zero or greater.</small>
+                <small class="error" data-error-for="daily_unlocks"></small>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-card">
+            <div class="section-heading">
+              <div class="section-icon">03</div>
+              <div><h2>Daily routine</h2><p>Move the sliders to reflect a typical day.</p></div>
+            </div>
+            <div class="routine-fields">
+              <div class="field">
+                <div class="label-line"><label for="study_hours">Study hours per day</label><output for="study_hours" class="range-value">4 hours</output></div>
+                <input type="range" id="study_hours" name="study_hours" min="0" max="24" step="0.5" value="4">
+                <div class="range-ends"><span>0 hours</span><span>24 hours</span></div>
+              </div>
+              <div class="field">
+                <div class="label-line"><label for="physical_activity_hours">Physical activity per day</label><output for="physical_activity_hours" class="range-value">1 hour</output></div>
+                <input type="range" id="physical_activity_hours" name="physical_activity_hours" min="0" max="24" step="0.5" value="1">
+                <div class="range-ends"><span>0 hours</span><span>24 hours</span></div>
+              </div>
+              <div class="field">
+                <div class="label-line"><label for="sleep_hours_per_night">Sleep per night</label><output for="sleep_hours_per_night" class="range-value">7 hours</output></div>
+                <input type="range" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.5" value="7">
+                <div class="range-ends"><span>0 hours</span><span>24 hours</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-card">
+            <div class="section-heading">
+              <div class="section-icon">04</div>
+              <div><h2>Stress level</h2><p>Select the option that best matches the input profile.</p></div>
+            </div>
+            <div class="field">
+              <div class="stress-options" role="radiogroup" aria-label="Stress level">
+                <label class="stress-option"><input type="radio" name="stress_level" value="Low"><span>Low</span></label>
+                <label class="stress-option"><input type="radio" name="stress_level" value="Medium"><span>Medium</span></label>
+                <label class="stress-option"><input type="radio" name="stress_level" value="High"><span>High</span></label>
+                <label class="stress-option"><input type="radio" name="stress_level" value="Very High"><span>Very high</span></label>
+              </div>
+              <small class="error" data-error-for="stress_level"></small>
+            </div>
+          </section>
+
+          <div class="submit-row">
+            <p><span class="required">*</span> Required fields</p>
+            <button type="submit" id="predict-btn" class="predict-btn">
+              <span>Generate prediction</span><span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </form>
+
+        <aside class="result-column">
+          <section class="result-card" id="result" aria-live="polite" aria-atomic="true">
+            <div class="result-topline"><span>YOUR RESULT</span><span class="result-spark" aria-hidden="true">✳</span></div>
+            <div class="state" id="state-idle">
+              <div class="result-illustration" aria-hidden="true"><svg viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="48" fill="#E5F7F4"/><circle cx="60" cy="60" r="32" fill="#C8EEE8"/><path d="M36 62h13l7-15 10 29 7-14h12" stroke="#087F79" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="60" r="44" stroke="#A5DDD5" stroke-dasharray="3 6"/></svg></div>
+              <h2>Your snapshot starts here</h2>
+              <p>Complete the profile and generate a prediction to see the model's estimated score.</p>
+              <div class="result-divider"></div>
+              <div class="mini-stat"><span class="mini-stat-icon">↗</span><span><strong>One profile at a time</strong><small>Update the inputs to explore another estimate.</small></span></div>
+            </div>
+            <div class="state" id="state-loading" hidden>
+              <div class="loading-ring" aria-hidden="true"></div>
+              <h2>Generating your estimate</h2>
+              <p>The request is being processed by the prediction service. The first request may take longer if the hosted service is waking up.</p>
+            </div>
+            <div class="state" id="state-success" hidden>
+              <div class="success-icon" aria-hidden="true">✓</div>
+              <h2>Prediction complete</h2>
+              <p class="result-caption">Predicted mental health score</p>
+              <div class="score-line"><span class="score" id="score-value">—</span><span class="out-of">/ 10</span></div>
+              <div class="score-track" aria-hidden="true"><span id="score-track-fill"></span></div>
+              <p class="note">This is a model estimate based on the information provided, not a clinical assessment or diagnosis.</p>
+              <button type="button" id="try-again-btn" class="secondary-btn">Adjust inputs and try again</button>
+            </div>
+            <div class="state" id="state-error" hidden>
+              <div class="error-icon" aria-hidden="true">!</div>
+              <h2>We couldn't get a prediction</h2>
+              <p id="error-message"></p>
+              <button type="button" id="retry-btn" class="secondary-btn">Try again</button>
+            </div>
+          </section>
+
+          <section class="info-card">
+            <div class="info-icon" aria-hidden="true">i</div>
+            <div><h3>About this tool</h3><p>This student project demonstrates a machine-learning prediction workflow. Its output depends on the training data and should not be used to make health decisions.</p></div>
+          </section>
+
+          <div class="privacy-note"><span aria-hidden="true">◇</span> Enter example data for demonstration. Avoid sharing identifying or sensitive personal information.</div>
+        </aside>
+      </div>
+
+      <footer class="page-footer"><span>MindMetric · Student ML project</span><span>Built for learning and exploration</span></footer>
+    </main>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
